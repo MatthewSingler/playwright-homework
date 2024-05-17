@@ -24,11 +24,9 @@ test.describe('Pet types', () => {
         const updatedPetTypeNameValue = await editPetTypeName.inputValue()
         expect(updatedPetTypeNameValue).toEqual('rabbit')
         const updateButton = page.getByRole('button', {name: "Update"})
-        await updateButton.click() //5. click update
+        await updateButton.click()
 
-        //await expect(petTypesTableName).toBeVisible()
-        page.locator('table tbody tr')
-        const petTypesListName = page.locator('table tbody tr [0]')
+        const petTypesListName = page.locator('tr input').nth(0)
         await expect(petTypesListName).toHaveValue('rabbit') //6. assertion for first pet in list is rabbit
 
         await page.getByRole('button', {name: "Edit"}).first().click() //7. click edit button for rabbit
@@ -36,9 +34,8 @@ test.describe('Pet types', () => {
         await editPetTypeName.click()
         await editPetTypeName.clear()
         await editPetTypeName.fill('cat') //8. change name to cat and update
-        expect(updatedPetTypeNameValue).toEqual('cat')
         await updateButton.click()
-        await expect(petTypesListName).toHaveValue('cat')//9. assertion that first pet in list is cat
+        await expect(petTypesListName).toHaveValue('cat') //9. assertion that first pet in list is cat
         
     })
 })
