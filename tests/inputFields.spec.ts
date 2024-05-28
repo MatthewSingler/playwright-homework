@@ -11,46 +11,46 @@ test.describe('Pet types', () => {
     })
 
     test('Update pet type', async({page}) => {
-        const petTypesTableName = page.getByRole('heading', {name: "Pet Types"})
+        const petTypesTableName = page.locator('app-pettype-list h2')
         await expect(petTypesTableName).toHaveText('Pet Types')  //2. assertion of Pet Types text displayed
 
-        await page.getByRole('button', {name: "Edit"}).first().click()  //3. click on edit button for cat
+        const petTypeTableEditButton = page.getByRole('button', {name: "Edit"})
+        await petTypeTableEditButton.first().click()  //3. click on edit button for cat
         await expect(page.getByRole('heading', {name: "Edit Pet Type"})).toBeVisible() //4. assertion of Edit Pet Type header
 
-        const editPetTypeName = page.locator('#name')
-        await editPetTypeName.click()
-        await editPetTypeName.clear()
-        await editPetTypeName.fill('rabbit') //5. change pet name to rabbit and click update
-        const updatedPetTypeNameValue = await editPetTypeName.inputValue()
-        expect(updatedPetTypeNameValue).toEqual('rabbit')
+        const editPetTypeNameInputField = page.locator('#name')
+        await editPetTypeNameInputField.click()
+        await editPetTypeNameInputField.clear()
+        await editPetTypeNameInputField.fill('rabbit') //5. change pet name to rabbit and click update
+        expect(editPetTypeNameInputField).toHaveValue('rabbit')
         const updateButton = page.getByRole('button', {name: "Update"})
         await updateButton.click()
 
         const petTypesListName = page.locator('tr input').nth(0)
         await expect(petTypesListName).toHaveValue('rabbit') //6. assertion for first pet in list is rabbit
 
-        await page.getByRole('button', {name: "Edit"}).first().click() //7. click edit button for rabbit
+        await petTypeTableEditButton.first().click() //7. click edit button for rabbit
         await expect(page.getByRole('heading', {name: "Edit Pet Type"})).toBeVisible()
-        await editPetTypeName.click()
-        await editPetTypeName.clear()
-        await editPetTypeName.fill('cat') //8. change name to cat and update
+        await editPetTypeNameInputField.click()
+        await editPetTypeNameInputField.clear()
+        await editPetTypeNameInputField.fill('cat') //8. change name to cat and update
         await updateButton.click()
         await expect(petTypesListName).toHaveValue('cat') //9. assertion that first pet in list is cat
         
     })
 
     test('Cancel pet type update', async ({page}) => {
-        const petTypesTableName = page.getByRole('heading', {name: "Pet Types"})
+        const petTypesTableName = page.locator('app-pettype-list h2')
         await expect(petTypesTableName).toHaveText('Pet Types')  //2. assertion of Pet Types text displayed
 
-        await page.getByRole('button', {name: "Edit"}).nth(1).click() //3. click on edit button for dog
-        const editPetTypeName = page.locator('#name') //4. type new name moose
-        await editPetTypeName.click()
-        await editPetTypeName.clear()
-        await editPetTypeName.fill('moose')
+        const petTypeTableEditButton = page.getByRole('button', {name: "Edit"})
+        await petTypeTableEditButton.nth(1).click() //3. click on edit button for dog
+        const editPetTypeNameInputField = page.locator('#name') //4. type new name moose
+        await editPetTypeNameInputField.click()
+        await editPetTypeNameInputField.clear()
+        await editPetTypeNameInputField.fill('moose')
 
-        const updatedPetTypeNameValue = await editPetTypeName.inputValue()
-        expect(updatedPetTypeNameValue).toEqual('moose') //5. Assertion for moose displayed on edit page
+        expect(editPetTypeNameInputField).toHaveValue('moose') //5. Assertion for moose displayed on edit page
 
         await page.getByRole('button', {name: "Cancel"}).click() //6. click cancel button
 
@@ -59,16 +59,17 @@ test.describe('Pet types', () => {
     })
 
     test('Pet type name validation', async ({page}) => {
-        const petTypesTableName = page.getByRole('heading', {name: "Pet Types"})
+        const petTypesTableName = page.locator('app-pettype-list h2')
         await expect(petTypesTableName).toHaveText('Pet Types')  //2. assertion of Pet Types text displayed
 
-        await page.getByRole('button', {name: "Edit"}).nth(2).click() //3. click on edit button for lizard
-        const editPetTypeName = page.locator('#name') //4. clear input field
-        await editPetTypeName.click()
-        await editPetTypeName.clear()
+        const petTypeTableEditButton = page.getByRole('button', {name: "Edit"})
+        await petTypeTableEditButton.nth(2).click() //3. click on edit button for lizard
+        const editPetTypeNameInputField = page.locator('#name') //4. clear input field
+        await editPetTypeNameInputField.click()
+        await editPetTypeNameInputField.clear()
 
-        const nameIsRequiredMessage = page.locator('div .help-block').filter({hasText: "Name is required"}) //5. Assertion for 'name is required' message
-        expect(nameIsRequiredMessage).toBeVisible()
+        const nameIsRequiredMessage = page.locator('div .help-block')
+        expect(nameIsRequiredMessage).toHaveText('Name is required') //5. Assertion for 'name is required' message
 
         const updateButton = page.getByRole('button', {name: "Update"}) //6. click update button
         await updateButton.click()
