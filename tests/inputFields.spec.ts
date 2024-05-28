@@ -13,23 +13,20 @@ test.describe('Pet types', () => {
     test('Update pet type', async({page}) => {
         const petTypesTableName = page.locator('app-pettype-list h2')
         await expect(petTypesTableName).toHaveText('Pet Types')  //2. assertion of Pet Types text displayed
-
-        const petTypeTableEditButton = page.getByRole('button', {name: "Edit"})
-        await petTypeTableEditButton.first().click()  //3. click on edit button for cat
+        await page.getByRole('button', {name: "Edit"}).nth(0).click() //3. click on edit button for cat
         await expect(page.getByRole('heading', {name: "Edit Pet Type"})).toBeVisible() //4. assertion of Edit Pet Type header
 
         const editPetTypeNameInputField = page.locator('#name')
         await editPetTypeNameInputField.click()
         await editPetTypeNameInputField.clear()
         await editPetTypeNameInputField.fill('rabbit') //5. change pet name to rabbit and click update
-        expect(editPetTypeNameInputField).toHaveValue('rabbit')
+        await expect(editPetTypeNameInputField).toHaveValue('rabbit')
         const updateButton = page.getByRole('button', {name: "Update"})
         await updateButton.click()
 
         const petTypesListName = page.locator('tr input').nth(0)
         await expect(petTypesListName).toHaveValue('rabbit') //6. assertion for first pet in list is rabbit
-
-        await petTypeTableEditButton.first().click() //7. click edit button for rabbit
+        await page.getByRole('button', {name: "Edit"}).nth(0).click() //7. click edit button for rabbit
         await expect(page.getByRole('heading', {name: "Edit Pet Type"})).toBeVisible()
         await editPetTypeNameInputField.click()
         await editPetTypeNameInputField.clear()
@@ -42,15 +39,13 @@ test.describe('Pet types', () => {
     test('Cancel pet type update', async ({page}) => {
         const petTypesTableName = page.locator('app-pettype-list h2')
         await expect(petTypesTableName).toHaveText('Pet Types')  //2. assertion of Pet Types text displayed
-
-        const petTypeTableEditButton = page.getByRole('button', {name: "Edit"})
-        await petTypeTableEditButton.nth(1).click() //3. click on edit button for dog
+        await page.getByRole('button', {name: "Edit"}).nth(1).click() //3. click on edit button for dog
         const editPetTypeNameInputField = page.locator('#name') //4. type new name moose
         await editPetTypeNameInputField.click()
         await editPetTypeNameInputField.clear()
         await editPetTypeNameInputField.fill('moose')
 
-        expect(editPetTypeNameInputField).toHaveValue('moose') //5. Assertion for moose displayed on edit page
+        await expect(editPetTypeNameInputField).toHaveValue('moose') //5. Assertion for moose displayed on edit page
 
         await page.getByRole('button', {name: "Cancel"}).click() //6. click cancel button
 
@@ -61,16 +56,11 @@ test.describe('Pet types', () => {
     test('Pet type name validation', async ({page}) => {
         const petTypesTableName = page.locator('app-pettype-list h2')
         await expect(petTypesTableName).toHaveText('Pet Types')  //2. assertion of Pet Types text displayed
-
-        const petTypeTableEditButton = page.getByRole('button', {name: "Edit"})
-        await petTypeTableEditButton.nth(2).click() //3. click on edit button for lizard
+        await page.getByRole('button', {name: "Edit"}).nth(2).click() //3. click on edit button for lizard
         const editPetTypeNameInputField = page.locator('#name') //4. clear input field
         await editPetTypeNameInputField.click()
         await editPetTypeNameInputField.clear()
-
-        const nameIsRequiredMessage = page.locator('div .help-block')
-        expect(nameIsRequiredMessage).toHaveText('Name is required') //5. Assertion for 'name is required' message
-
+        await expect(page.locator('div .help-block')).toHaveText('Name is required') //5. Assertion for 'name is required' message
         const updateButton = page.getByRole('button', {name: "Update"}) //6. click update button
         await updateButton.click()
 
