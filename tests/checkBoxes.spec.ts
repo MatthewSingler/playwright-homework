@@ -11,7 +11,7 @@ test.describe('Checkboxes', () => {
         await page.getByRole('link', {name: " All"}).click() //1. Select the VETERINARIANS menu item in the nav bar, then select "All"
     })
 
-    test('validate selected speacialties', async ({page}) => {
+    test('validate selected specialties', async ({page}) => {
         const vetDoctorTableHeader = page.locator('app-vet-list h2')
         await expect(vetDoctorTableHeader).toHaveText('Veterinarians') //2. Assert Veterinarians text is displayed above table
         const vetTableRowDr = page.getByRole('row', {name: " Helen Leary "})
