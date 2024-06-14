@@ -12,8 +12,7 @@ test.describe('Checkboxes', () => {
     })
 
     test('validate selected specialties', async ({page}) => {
-        const vetDoctorTableHeader = page.locator('app-vet-list h2')
-        await expect(vetDoctorTableHeader).toHaveText('Veterinarians') //2. Assert Veterinarians text is displayed above table
+        await expect (page.locator('app-vet-list h2')).toHaveText('Veterinarians') //2. Assert Veterinarians text is displayed above table
         await page.getByRole('row', {name: " Helen Leary "}).getByRole('button', {name: 'Edit Vet'}).click() //3. Select Helen Leary and click Edit Vet
         const specialtyDropdown = page.locator('.dropdown-display .selected-specialties') //4. Assert Specialties field is displayed with radiology
         await expect(specialtyDropdown).toHaveText('radiology')
