@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import exp from 'constants';
+
 
 test.beforeEach(async({page}) => {
     await page.goto('https://petclinic.bondaracademy.com/welcome')
@@ -47,34 +47,15 @@ test('Validate the pet type update', async ({page}) => {
     await page.getByRole('row', {name: "Rosy"}).getByRole('button', {name: 'Edit Pet'}).nth(1).click() //4. Click Edit button for Rosy
     await expect(petNameInputField).toHaveValue('Rosy') //5. Assert that Rosy is displayed in input field Name
     await expect(page.getByLabel('Type')).toHaveValue('dog') //6. Assert value dog is displayed in type field
-    await petTypeMenuDropDown.click()
-    const pets = {
-        cat: 'cat',
-        dog: 'dog',
-        lizard: 'lizard',
-        snake: 'snake',
-        bird: 'bird',
-        hamster: 'hamster'
-    }
-    await petTypeMenuDropDown.click()
-    for(const pet in pets){
-        await petTypeMenuDropDown.filter({hasText: "bird"}).selectOption(pet)
-        await expect(petTypeMenuDropDown).toHaveValue(pet)
-        if(pet === 'bird') //7. Select Bird from dropdown menu
-            await petTypeMenuDropDown.click()
-    }
+    await petTypeMenuDropDown.selectOption('bird') //7. Select bird from drop down menu
     await expect(page.getByLabel('Type')).toHaveValue('bird') //8. Assert value bird is displayed in type field and dropdown
     await expect(petTypeMenuDropDown).toHaveValue('bird')
     await page.getByRole('button', {name: "Update Pet"}).click() //9. Click update pet button
-    await expect(page.getByRole('list', {name: "Type"})).toHaveValue('bird') //10. Assert bird is in the type field
+    await expect(page.getByRole('row', {name: 'Type'})).toHaveValue('bird')
+    //await expect(page.getByRole('list', {name: "Type"})).toHaveText('bird') //10. Assert bird is in the type field
     await page.getByRole('row', {name:"Rosy" }).getByRole('button', {name: 'Edit Pet'}).click() //11. Click Edit button for Rosy again and change type back to dog
     await petTypeMenuDropDown.click()
-    for(const pet in pets){
-        await petTypeMenuDropDown.filter({hasText: "dog"}).selectOption(pet)
-        await expect(petTypeMenuDropDown).toHaveValue(pet)
-        if(pet === 'dog')
-            await petTypeMenuDropDown.click()
-    }
+    await petTypeMenuDropDown.selectOption('dog')
     await expect(page.getByLabel('Type')).toHaveValue('dog')
     await expect(petTypeMenuDropDown).toHaveValue('dog')
     await page.getByRole('button', {name: "Update Pet"}).click()
