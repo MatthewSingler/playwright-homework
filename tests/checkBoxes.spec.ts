@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import exp from 'constants';
 
 test.beforeEach(async({page}) => {
     await page.goto('https://petclinic.bondaracademy.com/welcome')
