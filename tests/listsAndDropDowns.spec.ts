@@ -53,6 +53,7 @@ test('Validate the pet type update', async ({page}) => {
     await page.getByRole('button', {name: "Update Pet"}).click() //9. Click update pet button
     await expect(page.getByLabel('Type')).toHaveValue('bird') //10. Assert bird is in the type field
     await page.getByRole('row', {name: "Rosy"}).getByRole('button', {name: 'Edit Pet'}).nth(1).click() //11. Click Edit button for Rosy again and change type back to dog
+    await expect(page.getByLabel('Type')).toHaveValue('bird')
     await petTypeMenuDropDown.selectOption('dog')
     await expect(page.getByLabel('Type')).toHaveValue('dog')
     await expect(petTypeMenuDropDown).toHaveValue('dog')
